@@ -1,16 +1,55 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using MVC.Handlers;
+using MVC.Service;
+using Refit;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configuração do Configuration para acessar as variáveis
+var configuration = builder.Configuration;
+
+// Adiciona os serviços ao container
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
+var clientHandler = new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+};
+
+builder.Services.AddRefitClient<IUsuarioService>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(configuration.GetValue<string>("UrlApiCurso"));
+    }).ConfigurePrimaryHttpMessageHandler(_ => clientHandler);
+
+builder.Services.AddTransient<BearerTokenMessageHandler>();
+
+builder.Services.AddRefitClient<ICursoService>()
+    .AddHttpMessageHandler<BearerTokenMessageHandler>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(configuration.GetValue<string>("UrlApiCurso"));
+    }).ConfigurePrimaryHttpMessageHandler(_ => clientHandler);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Usuario/Logar";
+        options.AccessDeniedPath = "/Usuario/Logar";
+    });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// Configuração do pipeline de requisições
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseHsts(); // Define o cabeçalho HSTS (Segurança para HTTPS)
 }
 
 app.UseHttpsRedirection();
@@ -18,6 +57,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
