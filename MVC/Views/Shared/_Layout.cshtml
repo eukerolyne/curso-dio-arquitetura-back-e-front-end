@@ -28,15 +28,15 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @User.Identity.Name
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Curso" asp-action="Cadastrar">Cadastrar curso</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Curso" asp-action="Listar">Listar cursos</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="EfetuarLogoff">Logoff</a>
-                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Curso" asp-action="Cadastrar">Cadastrar curso</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Curso" asp-action="Listar">Listar cursos</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="EfetuarLogoff">Logoff</a></li>
+                                </ul>
                             </li>
                         }
                         else

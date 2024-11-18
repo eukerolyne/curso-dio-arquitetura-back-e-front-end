@@ -103,7 +103,7 @@ namespace MVC.Controllers
                 ModelState.AddModelError("", ex.Message);
             }
 
-            return View();
+            return View("Index", "Home");
         }
 
         public IActionResult EfetuarLogoff()
