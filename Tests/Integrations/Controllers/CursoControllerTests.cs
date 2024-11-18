@@ -26,7 +26,7 @@ namespace Tests.Integrations.Controllers
 
             // Act
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoginDtoOutput.Token);
-            var httpClientRequest = await _httpClient.PostAsync("api/cursos", content);
+            var httpClientRequest = await _httpClient.PostAsync("api/curso", content);
 
             // Assert
             _output.WriteLine($"{nameof(CursoControllerTests)}_{nameof(Registrar_InformandoDadosDeUmCursoValidoEUmUsuarioAutenticado_DeveRetornarSucesso)} = {await httpClientRequest.Content.ReadAsStringAsync()}");
@@ -41,7 +41,7 @@ namespace Tests.Integrations.Controllers
             StringContent content = new StringContent(JsonConvert.SerializeObject(cursoViewModelInput.Generate()), Encoding.UTF8, "application/json");
 
             // Act
-            var httpClientRequest = await _httpClient.PostAsync("api/cursos", content);
+            var httpClientRequest = await _httpClient.PostAsync("api/curso", content);
 
             // Assert
             _output.WriteLine($"{nameof(CursoControllerTests)}_{nameof(Registrar_InformandoDadosDeUmCursoValidoEUmUsuarioNaoAutenticado_DeveRetornarSucesso)} = {await httpClientRequest.Content.ReadAsStringAsync()}");
@@ -57,7 +57,7 @@ namespace Tests.Integrations.Controllers
 
             // Act
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoginDtoOutput.Token);
-            var httpClientRequest = await _httpClient.GetAsync("api/v1/cursos");
+            var httpClientRequest = await _httpClient.GetAsync("api/curso");
 
             // Assert
             _output.WriteLine($"{nameof(CursoControllerTests)}_{nameof(Obter_InformandoUmUsuarioAutenticado_DeveRetornarSucesso)} = {await httpClientRequest.Content.ReadAsStringAsync()}");
