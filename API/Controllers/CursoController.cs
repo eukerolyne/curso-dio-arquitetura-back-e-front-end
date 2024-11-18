@@ -12,17 +12,17 @@ namespace API.Controllers
     [Authorize]
     public class CursoController : ControllerBase
     {
-        private readonly ILogger<CursoController> _logger;
+        private readonly ILogger<UsuarioController> _logger;
         private readonly ICursoRepositorio _cursoRepositorio;
 
-        public CursoController(ILogger<CursoController> logger, ICursoRepositorio cursoRepositorio)
+        public CursoController(ILogger<UsuarioController> logger, ICursoRepositorio cursoRepositorio)
         {
             _logger = logger;
             _cursoRepositorio = cursoRepositorio;
         }
 
         [HttpPost, Route("")]
-        public IActionResult Post(CursoDtoInput cursoDto)
+        public async Task<IActionResult> Post(CursoDtoInput cursoDto)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace API.Controllers
         }
 
         [HttpGet, Route("")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
